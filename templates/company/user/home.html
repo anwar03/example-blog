@@ -1,0 +1,13 @@
+{% extends 'company/user/base.html' %}
+{% load i18n static rest_framework %}
+{% block page_name %}
+    {% trans "Company Employee Home" %}
+{% endblock page_name %}
+{% block content %}
+
+{% endblock %}
+{% block extra_js %}
+    <script>
+        $("#id_menu_staff_home").addClass('active');
+    </script>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'company/user/home.html' %}
+{% load i18n static rest_framework %}
+{% block title %}{% trans "Profile" %}{% endblock %}
+{% block page_name %}
+    {% trans 'Profile' %}
+{% endblock page_name %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        {% trans "Profile" %}
+                    </h3>
+                    <div class="dataTables_length pull-right">
+                        <ul class="list-inline text-left no-bottom-margin">
+                            <li>
+                                {% if user %}
+                                    <a role="button" href="{% url 'url_employee_profile_update' %}"
+                                       class="btn btn-primary btn-sm">
+                                        <i class="fa fa-phone-square"></i> {% trans "Update" %}
+                                    </a>
+                                {% else %}
+                                    <a role="button" href="{% url 'url_employee_profile_update' %}"
+                                       class="btn btn-primary btn-sm">
+                                        <i class="fa fa-phone-square"></i> {% trans "Add" %}
+                                    </a>
+                                {% endif %}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        {% if user %}
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="profile form-group has-feedback {% if user.image.errors %}has-error{% endif %}">
+                                        <img id="image-preview" class="pro-img img-responsive" src="
+                                                {% if user and user.image %}{{ user.image.url }}
+                                                {% else %}{% static 'admin-lte/dist/img/no-photo.png' %}{% endif %}"
+                                             alt="User profile picture">
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="col-md-12">
+                                        <div class="col-sm-4">
+                                            <label>Email: </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p>{{ user.username }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-sm-4">
+                                            <label>Name: </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p>{{ user.get_full_name }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-sm-4">
+                                            <label>contact: </label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p>{{ user.contact }}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

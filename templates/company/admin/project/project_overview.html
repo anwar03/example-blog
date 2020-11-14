@@ -1,0 +1,57 @@
+{% extends 'company/admin/home.html' %}
+{% load i18n static rest_framework %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        <strong>Project: </strong>{{ project.name }}
+                    </h3>
+                    <div class="dataTables_length pull-right">
+                        <ul class="list-inline text-left no-bottom-margin">
+                            <li>
+                                <a role="button" href="{% url 'url_project_edit' project.id %}"
+                                   class="btn btn-success btn-sm"><i
+                                        class="fa fa-edit"></i> {% trans "Update" %}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper project-overview dt-bootstrap">
+                        <div class="overview">
+                            <h2 class="title text-center">{% trans 'Overview' %}</h2>
+                            <div class="assign-member">
+                                <label for="member">
+                                    <h4 id="member">
+                                        <strong>Assigned member :</strong>
+                                    </h4>
+                                </label>
+                                <div class="member">
+                                    {% for employee in employees %}
+                                        <p>- {{ employee.get_employee_name }}</p>
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+                            <p><strong>Type of project : </strong>{{ project.project_type }}</p>
+                            <p><strong>Hourly income SEK : </strong>{{ project.income }} SEK</p>
+                        </div>
+
+                        <div class="finances">
+                            <h2 class="title text-center">Finances</h2>
+                            <div class="finances-body">
+                                <p><strong>Reported hours : </strong>{{ reported_hours }}</p>
+                                <p><strong>Income : </strong>{{ project_income }} SEK</p>
+                                <p><strong>Costs : </strong>{{ project_cost }} SEK</p>
+                                <p><strong>Contribution profit
+                                    : </strong>{{ project_profit }} SEK</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

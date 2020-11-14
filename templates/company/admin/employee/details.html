@@ -1,0 +1,134 @@
+{% extends 'company/admin/home.html' %}
+{% load i18n static rest_framework %}
+{% block title %}{% trans "Employee Profile" %}{% endblock %}
+{% block page_name %}
+    {% trans 'Employee Profile' %}
+{% endblock page_name %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box profile-box">
+                <div class="box-header profile-header">
+                    <h3 class="box-title">
+                        {% trans "Employee Profile" %}
+                    </h3>
+                    <div class="dataTables_length pull-right">
+                        <ul class="list-inline text-left no-bottom-margin">
+                            <li>
+                                {% if employee %}
+                                    <a role="button" href="{% url 'url_admin_employee_update' pk=employee.id %}"
+                                       class="btn btn-primary btn-sm">
+                                        <i class="fa fa-phone-square"></i> {% trans "Update" %}
+                                    </a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        {% if employee %}
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <div class="profile form-group has-feedback {% if employee.user.image.errors %}has-error{% endif %}">
+                                        <img id="image-preview" class="pro-img img-responsive" src="
+                                            {% if employee.user and employee.user.image %}
+                                                {{ employee.user.image.url }}
+                                            {% else %}
+                                                {% static 'admin-lte/dist/img/no-photo.png' %}
+                                            {% endif %}"
+                                             alt="User profile picture">
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-1">
+                                            <label>Name </label>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label>: </label>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <p>{{ employee.user.get_full_name }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-1">
+                                            <label>Email </label>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label>: </label>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <p>{{ employee.user }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-1">
+                                            <label>Contact </label>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label>: </label>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <div class="col-sm-4 pl-0">
+                                                <p>{{ employee.contact }}</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <a class="btn btn-default btn-xs"
+                                                   href="{% url 'url_admin_employee_contact' pk=employee.id %}">{% trans "Edit" %}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-1">
+                                            <label>Address </label>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label>: </label>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <div class="col-sm-4 pl-0">
+                                                <p>{{ employee.address }}</p>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <a class="btn btn-default btn-xs"
+                                                   href="{% url 'url_admin_employee_address' pk=employee.id %}">{% trans "Edit" %}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-1">
+                                            <label>Salary </label>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <label>: </label>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <div class="col-sm-4 pl-0">
+                                                {% if employee.salaries.exists %}
+                                                    <p>{{ employee.salaries.last }}</p>
+                                                {% else %}
+                                                    <p>{% trans "None" %}</p>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-sm-8">
+                                                {% if employee.salaries.exists %}
+                                                    <a class="btn btn-default btn-xs"
+                                                       href="{% url 'url_employee_salary_edit' pk=employee.id %}">{% trans "Edit" %}</a>
+                                                {% else %}
+                                                    <a class="btn btn-default btn-xs"
+                                                       href="{% url 'url_employee_salary_add' pk=employee.id %}">{% trans "Add" %}</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

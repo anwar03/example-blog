@@ -1,0 +1,75 @@
+{% extends 'company/user/home.html' %}
+{% load i18n static rest_framework %}
+{% block title %}{% trans "Contact" %}{% endblock %}
+{% block page_name %}
+    {% trans '' %}
+{% endblock page_name %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        {% trans "Contact" %}
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="dataTables_length pull-right">
+                                    <ul class="list-inline text-left no-bottom-margin">
+                                        <li>
+                                            {% if contact %}
+                                                <a role="button" href="{% url 'url_employee_contact_edit' %}"
+                                                   class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-phone-square"></i> {% trans "Update" %}
+                                                </a>
+                                            {% else %}
+                                                <a role="button" href="{% url 'url_employee_contact_add' %}"
+                                                   class="btn btn-primary btn-sm">
+                                                    <i class="fa fa-phone-square"></i> {% trans "Add" %}
+                                                </a>
+                                            {% endif %}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {% if contact %}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-2">
+                                        <label>Email: </label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <p>{{ contact.email }}</p>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>Mobile: </label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <p>{{ contact.mobile }}</p>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>Telephone: </label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <p>{{ contact.telephone }}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+        $("#id_menu_staff_staff").addClass('active');
+    </script>
+{% endblock extra_js %}

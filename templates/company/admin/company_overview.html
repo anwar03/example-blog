@@ -1,0 +1,188 @@
+{% extends 'company/admin/home.html' %}
+{% load i18n static rest_framework %}
+{% block title %}
+    {% trans 'Company Admin' %}
+{% endblock %}
+{% block page_name %}
+    {% trans 'Company Overview' %}
+{% endblock page_name %}
+
+{% block page_actions %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="pull-right" style="display: inline-flex">
+                <div id="custom" ></div>
+                <div id="fixed" ></div>
+                <form class="form-inline" method="GET" action="">
+                    <div class="form-group" id="custom-days"></div>
+                    <div class="form-group" id="fixed-days"></div>
+                    <button value="submit" type="submit" class="btn btn-success">submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-sm-6 text-center">
+            <div class="col-sm-4">
+                <div class="small-box bg-light-blue min_height">
+                    <div class="inner">
+                        <h5>{% trans 'INCOME' %}</h5>
+
+                        <p>{{ income }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="small-box bg-green min_height">
+                    <div class="inner">
+                        <h5>{% trans 'COST' %}</h5>
+
+                        <p>{{ cost }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="small-box bg-aqua min_height">
+                    <div class="inner">
+                        <h5>{% trans 'CONTRIBUTION PROFIT' %}</h5>
+
+                        <p>{{ profit }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="small-box bg-light-blue min_height">
+                    <div class="inner">
+                        <h5>{% trans 'OCCUPANCY' %}</h5>
+
+                        <p>{{ occupancy }}%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="small-box bg-green min_height">
+                    <div class="inner">
+                        <h5>{% trans 'NUMBER OF PROJECT' %}</h5>
+
+                        <p>{{ company_projects }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="small-box bg-aqua min_height">
+                    <div class="inner">
+                        <h5>{% trans 'NUMBER OF EMPLOYEES' %}</h5>
+
+                        <p>{{ employees.count }}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+            <table class="table table-bordered table-hover table-striped dataTable " role="grid">
+                <thead class="bg-blue">
+                <tr role="row ">
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                        colspan="1" aria-label="Browser: activate to sort column ascending"
+                        style="width: 342px;">{% trans "Project Name" %}
+                    </th>
+                    <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                        colspan="1" aria-label="Browser: activate to sort column ascending"
+                        style="width: 342px;">{% trans "Contribution Profit" %}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for project in projects %}
+                    <tr>
+                        <td>{{ project.name }}</td>
+                        <td>{{ project.project_contribution_profit }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+{% endblock %}
+{% block extra_js %}
+
+    <script>
+        $(document).ready(function () {
+            var date_from = "{{ query_params.date_from }}";
+            var date_to = "{{ query_params.date_to }}";
+            var days = "{{ query_params.days }}";
+
+            if (date_from || date_to) {
+                custom_search();
+                if (date_from) {
+                    $('#date_from').val(date_from);
+                }
+
+                if (date_to) {
+                    $('#date_to').val(date_to);
+                }
+            } else {
+                fixed_search();
+                if (days) {
+                    $('#days').val(days);
+                } else {
+                    $('#days').val(30);
+                }
+            }
+
+        });
+
+
+        var custom = function () {
+            $("#custom").click(custom_search());
+        };
+
+        var fixed = function () {
+            $("#fixed").click(fixed_search());
+        };
+
+        var custom_search = function () {
+            $('#fixed-days').empty();
+            $('#custom').empty();
+            $('#fixed').append(
+                "<button onclick=\"fixed()\" class=\"btn btn-default\">Fixed</button>"
+            );
+            $('#custom-days').append(
+                "<div class=\"form-group\">\n" +
+                " <label for=\"date_from\">From</label>\n" +
+                "<input class=\"form-control\" name=\"date_from\" id=\"date_from\" type=\"date\"/>\n" +
+                "</div>\n" +
+                "<div class=\"form-group\">\n" +
+                "<label for=\"date_to\">To</label>\n" +
+                "<input class=\"form-control\" name=\"date_to\" id=\"date_to\" type=\"date\"/>\n" +
+                "</div>"
+            );
+        };
+
+        var fixed_search = function () {
+            $('#custom-days').empty();
+            $('#fixed').empty();
+            $('#custom').append(
+                "<button onclick=\"custom()\" class=\"btn btn-default\">Custom</button>"
+            );
+            $('#fixed-days').append(
+                "<label class=\"sr-only\" for=\"days\"></label>\n" +
+                "<select class=\"form-control\" id=\"days\" name=\"days\">\n" +
+                "<option value=\"\">Select an Option</option>\n" +
+                "<option value=\"365\">Year</option>\n" +
+                "<option value=\"30\">Month</option>\n" +
+                "<option value=\"7\">Week</option>\n" +
+                "<option value=\"1\">Day</option>\n" +
+                "</select>"
+            );
+        }
+
+    </script>
+
+{% endblock extra_js %}

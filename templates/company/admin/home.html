@@ -1,0 +1,14 @@
+{% extends 'company/admin/base.html' %}
+{% load i18n static %}
+{% block page_name %}
+    {% trans 'Company Admin' %}
+{% endblock page_name %}
+{% block content %}
+
+
+{% endblock %}
+{% block extra_js %}
+    <script>
+        $("#id_menu_staff_home").addClass('active');
+    </script>
+{% endblock %}

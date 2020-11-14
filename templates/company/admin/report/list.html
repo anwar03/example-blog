@@ -1,0 +1,110 @@
+{% extends 'company/admin/home.html' %}
+{% load i18n static rest_framework %}
+{% block title %}{% trans "Report" %}{% endblock %}
+{% block page_name %}
+    {% trans 'Report' %}
+{% endblock page_name %}
+{% block content %}
+    <div class="row" xmlns="http://www.w3.org/1999/html">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        {% trans "Report List" %}
+                    </h3>
+                    <div class="dataTables_length pull-right">
+
+                        <form class="form-inline" method="GET" action="">
+                            <div class="form-group">
+                                <label class="sr-only" for="date"></label>
+                                <input type="date" class="form-control" id="date" name="date">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="search"></label>
+                                <input type="text" class="form-control" id="search" name="search" placeholder="Search">
+                            </div>
+                            <button value="submit" type="submit" class="btn btn-success">submit</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+
+                        {% if reports %}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-striped dataTable" role="grid">
+                                        <thead>
+                                        <tr role="row">
+                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                colspan="1" aria-label="Browser: activate to sort column ascending"
+                                                style="width: 342px;">{% trans "Employee Name" %}
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                colspan="1" aria-label="Browser: activate to sort column ascending"
+                                                style="width: 342px;">{% trans "Email" %}
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example1"
+                                                rowspan="1"
+                                                colspan="1" aria-label="Platform(s): activate to sort column ascending"
+                                                style="width: 306px;">{% trans "Description" %}
+                                            </th>
+                                            <th class="sorting text-center" tabindex="0" aria-controls="example1"
+                                                rowspan="1"
+                                                colspan="1" aria-label="Platform(s): activate to sort column ascending"
+                                                style="width: 306px;">{% trans "Date" %}
+                                            </th>
+                                            <th class="sorting text-center" tabindex="0" aria-controls="example1"
+                                                rowspan="1"
+                                                colspan="1" aria-label="Platform(s): activate to sort column ascending"
+                                                style="width: 306px;">{% trans "Hours" %}
+                                            </th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for report in reports %}
+                                            <tr role="row" class="{% cycle 'odd' 'even' %}">
+                                                <td>{{ report.get_username }}</td>
+                                                <td>{{ report.get_email }}</td>
+                                                <td>{{ report.description }}</td>
+                                                <td class="text-center">{{ report.date }}</td>
+                                                <td class="text-center">{{ report.get_time }}</td>
+                                            </tr>
+                                        {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                {% include 'commons/pagination.html' %}
+                            </div>
+                        {% else %}
+                            <div class="no-record-found">
+                                <i class="fa fa-list fa-5x" aria-hidden="true"></i>
+                                <p class="lead">
+                                    {% trans "No report record found" %}
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_js %}
+
+    <script>
+        $(document).ready(function () {
+            var date = "{{ query_params.date }}";
+            var search = "{{ query_params.search }}";
+            if (date || search) {
+                $('#date').val(date);
+                $('#search').val(search);
+            }
+        });
+    </script>
+
+{% endblock extra_js %}

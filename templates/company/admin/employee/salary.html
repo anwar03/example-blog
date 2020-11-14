@@ -1,0 +1,37 @@
+{% extends "company/admin/base.html" %}
+{% load i18n static rest_framework %}
+
+{% block body_class %}login-page{% endblock %}
+
+{% block content %}
+    <div class="login-box">
+        <div class="login-box-body">
+            {% block login_errors %}
+                {% if salary.errors and not salary.non_field_errors %}
+                    <p class="alert alert-danger">
+                        {% if salary.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}
+                            {% trans "Please correct the errors below." %}{% endif %}
+                    </p>
+                {% endif %}
+
+                {% if salary.non_field_errors %}
+                    {% for error in salary.non_field_errors %}
+                        <p class="alert alert-danger">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                {% endif %}
+            {% endblock login_errors %}
+
+            {% block login_form %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {% render_form salary %}
+                    <a href="{% url 'url_admin_employee_details' pk=employee_pk %}" class="btn btn-default" type="submit" value="cancel">Cancel</a>
+                    <button class="btn btn-success pull-right" type="submit" value="Employee salary">Employee Salary</button>
+                </form>
+            {% endblock login_form %}
+
+        </div>
+    </div>
+{% endblock %}

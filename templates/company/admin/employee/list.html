@@ -1,0 +1,275 @@
+{% extends 'company/admin/home.html' %}
+{% load i18n static rest_framework %}
+{% block page_name %}
+    {% trans "Company Employees" %}
+{% endblock %}
+{% block page_actions %}
+    <div class="dataTables_length pull-right">
+        <ul class="list-inline text-left no-bottom-margin">
+            <li>
+                <a role="button" href="{% url 'url_admin_employee_add' %}" class="btn btn-primary btn-sm">
+                    <i class="fa fa-plus fa-user-plus"></i> {% trans "Add Employee" %}</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        {% trans "Employee List" %}
+                    </h3>
+                    <div class="pull-right" style="display: inline-flex;">
+                        <div id="custom"></div>
+                        <div id="fixed"></div>
+                        <form class="form-inline" method="GET" action="">
+                            <div class="form-group" id="custom-days"></div>
+                            <div class="form-group" id="fixed-days"></div>
+                            <div class="form-group">
+                                <label class="sr-only" for="search"></label>
+                                <select name="email" class="form-control select2" id="email">
+                                    <option value="">Select an Employee</option>
+                                    {% for employee in company_employees %}
+                                        <option value="{{ employee.email }}">{{ employee.email }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button value="submit" type="submit" class="btn btn-success">submit</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+
+                        {% if employees %}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-striped dataTable" role="grid">
+                                        <thead>
+                                        <tr role="row">
+                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                colspan="1" aria-label="Platform(s): activate to sort column ascending"
+                                            >{% trans "Employee" %}
+                                            </th>
+                                            <th class="sorting text-center" tabindex="0" aria-controls="example1"
+                                                rowspan="1"
+                                                colspan="1" aria-label="Browser: activate to sort column ascending"
+                                            >{% trans "Reported hours" %}
+                                            </th>
+                                            <th class="sorting text-center" tabindex="0" aria-controls="example1"
+                                                rowspan="1"
+                                                colspan="1"
+                                                aria-label="Engine version: activate to sort column ascending"
+                                            >{% trans "Contribution profit" %}
+                                            </th>
+                                            <th class="sorting text-center" tabindex="0" aria-controls="example1"
+                                                rowspan="1"
+                                                colspan="1"
+                                                aria-label="Engine version: activate to sort column ascending"
+                                            >{% trans "Occupancy" %}
+                                            </th>
+                                            <th class="sorting text-center" tabindex="0" aria-controls="example1"
+                                                rowspan="1"
+                                                colspan="1"
+                                                aria-label="Engine version: activate to sort column ascending"
+                                            >{% trans "Action" %}
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for employee in employees %}
+                                            <tr role="row" class="{% cycle 'odd' 'even' %}">
+                                                <td>
+                                                    <a href="{% url 'url_admin_employee_overview' employee.id %}">
+                                                        {{ employee.get_username }}
+                                                    </a>
+                                                </td>
+                                                <td class="text-center">
+                                                    {{ employee.hours }}
+                                                </td>
+                                                <td class="text-center">{{ employee.profit }}</td>
+                                                <td class="text-center">{{ employee.occupancy }} %</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-success btn-xs"
+                                                       href="{% url 'url_admin_employee_update' pk=employee.id %}">
+                                                        {% trans 'Edit' %}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr role="row">
+                                            <td> {% trans "Total" %}</td>
+                                            <td class="text-center">{{ total.hours }}</td>
+                                            <td class="text-center">{{ total.profit }}</td>
+                                            <td class="text-center">{{ total.occupancy }} %</td>
+                                            <td class="text-center"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                {% include 'commons/pagination.html' %}
+                            </div>
+                        {% else %}
+                            <div class="no-record-found">
+                                <i class="fa fa-list fa-5x" aria-hidden="true"></i>
+                                <p class="lead">{% trans "No Employee record found" %} <br>
+                                    <span class="subheader">{% trans "To add a Employee click 'Add Employee' button" %}</span>
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        {% trans "Invited Employee List" %}
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap">
+
+                        {% if pending_employees %}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-bordered table-hover table-striped dataTable" role="grid">
+                                        <thead>
+                                        <tr role="row">
+                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                colspan="1" aria-label="Platform(s): activate to sort column ascending"
+                                                style="width: 306px;">{% trans "Employee email" %}
+                                            </th>
+                                            <th class="sorting text-center" tabindex="0" aria-controls="example1"
+                                                rowspan="1"
+                                                colspan="1"
+                                                aria-label="Engine version: activate to sort column ascending"
+                                                style="width: 243px;">{% trans "Action" %}
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for employee in pending_employees %}
+                                            <tr role="row" class="{% cycle 'odd' 'even' %}">
+                                                <td>{{ employee.email }}</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-success btn-xs">
+                                                        {% trans 'Edit' %}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                {% include 'commons/pagination.html' %}
+                            </div>
+                        {% else %}
+                            <div class="no-record-found">
+                                <i class="fa fa fa-user-circle-o fa-5x" aria-hidden="true"></i>
+                                <p class="lead">
+                                    {% trans "No Employee record found" %}
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_js %}
+
+    <script>
+        $(document).ready(function () {
+            var email = "{{ query_params.email }}";
+            var date_from = "{{ query_params.date_from }}";
+            var date_to = "{{ query_params.date_to }}";
+            var days = "{{ query_params.days }}";
+
+            if (date_from || date_to) {
+                custom_search();
+                if (date_from) {
+                    $('#date_from').val(date_from);
+                }
+
+                if (date_to) {
+                    $('#date_to').val(date_to);
+                }
+            } else {
+                fixed_search();
+                if (days) {
+                    $('#days').val(days);
+                } else {
+                    $('#days').val(30);
+                }
+            }
+
+
+            if (email) {
+                $('#email').val(email);
+                $('#select2-email-container').empty();
+                $('#select2-email-container').attr('title', email);
+                $('#select2-email-container').append(email);
+            }
+        });
+
+
+        var custom = function () {
+            $("#custom").click(custom_search());
+        };
+
+        var fixed = function () {
+            $("#fixed").click(fixed_search());
+        };
+
+        var custom_search = function () {
+            $('#fixed-days').empty();
+            $('#custom').empty();
+            $('#fixed').append(
+                "<button onclick=\"fixed()\" class=\"btn btn-default\">Fixed</button>"
+            );
+            $('#custom-days').append(
+                "<div class=\"form-group\">\n" +
+                " <label for=\"date_from\">From</label>\n" +
+                "<input class=\"form-control\" name=\"date_from\" id=\"date_from\" type=\"date\"/>\n" +
+                "</div>\n" +
+                "<div class=\"form-group\">\n" +
+                "<label for=\"date_to\">To</label>\n" +
+                "<input class=\"form-control\" name=\"date_to\" id=\"date_to\" type=\"date\"/>\n" +
+                "</div>"
+            );
+        };
+
+        var fixed_search = function () {
+            $('#custom-days').empty();
+            $('#fixed').empty();
+            $('#custom').append(
+                "<button onclick=\"custom()\" class=\"btn btn-default\">Custom</button>"
+            );
+            $('#fixed-days').append(
+                "<label class=\"sr-only\" for=\"days\"></label>\n" +
+                "<select class=\"form-control\" id=\"days\" name=\"days\">\n" +
+                "<option value=\"\">Select an Option</option>\n" +
+                "<option value=\"365\">Year</option>\n" +
+                "<option value=\"30\">Month</option>\n" +
+                "<option value=\"7\">Week</option>\n" +
+                "<option value=\"1\">Day</option>\n" +
+                "</select>"
+            );
+        }
+    </script>
+
+{% endblock extra_js %}
+

@@ -1,0 +1,6 @@
+{% extends 'adminlte/base.html' %}
+{% load i18n static rest_framework %}
+{% block title %}{% trans "Company Admin" %}{% endblock %}
+{% block nav_sidebar %}
+    {% include 'company/admin/lib/sidebar.html' %}
+{% endblock nav_sidebar %}
