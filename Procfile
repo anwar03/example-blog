@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath grayspaceit.wsgi
+web: gunicorn grayspaceit.wsgi
