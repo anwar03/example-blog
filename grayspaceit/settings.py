@@ -81,10 +81,26 @@ WSGI_APPLICATION = 'grayspaceit.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+# postgres://xwdjurrbzhfbih:78be1c366acdd95a4989de22054fd1ad7dfaa8512d9f40375d5f168de36f9860@ec2-3-220-222-72.compute-1.amazonaws.com:5432/d6l415h8ahsgek
+
+# this url follow this pattern
+# postgres://user:pass@host:port/name
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd6l415h8ahsgek',
+        'USER': 'xwdjurrbzhfbih',
+        'PASSWORD': '78be1c366acdd95a4989de22054fd1ad7dfaa8512d9f40375d5f168de36f9860',
+        'HOST': 'ec2-3-220-222-72.compute-1.amazonaws.com',
+        'PORT': '5432'
     }
 }
 
